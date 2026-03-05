@@ -17,6 +17,7 @@ openclaw:
           openclaw.json: |
             {
               "gateway": {
+                "mode": "local",
                 "controlUi": {
                   "dangerouslyAllowHostHeaderOriginFallback": true
                 }
