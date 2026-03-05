@@ -21,8 +21,10 @@ openclaw:
                 }
               },
               "agents": {
-                "default": {
-                  "primary": "anthropic/claude-opus-4-6"
+                "defaults": {
+                  "model": {
+                    "primary": "anthropic/claude-opus-4-6"
+                  }
                 }
               },
               "channels": {
