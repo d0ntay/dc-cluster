@@ -1,0 +1,7 @@
+openclaw:
+  # Reference an existing secret for API keys instead of putting them in plain text.
+  # Create the secret manually:
+  #   kubectl create secret generic openclaw-env-secret -n openclaw \
+  #     --from-literal=ANTHROPIC_API_KEY=sk-ant-xxx
+  credentials:
+    existingSecret: openclaw-env-secret
