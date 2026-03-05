@@ -3,8 +3,8 @@ name: openclaw
 description: OpenClaw AI assistant
 type: application
 version: 0.1.0
-appVersion: "1.0.0"
+appVersion: "2026.2.23"
 dependencies:
   - name: openclaw
     version: "*"
-    repository: https://chrisbattarbee.github.io/openclaw-helm
+    repository: https://serhanekicii.github.io/openclaw-helm

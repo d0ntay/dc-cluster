@@ -1,7 +1,34 @@
 openclaw:
-  # Reference an existing secret for API keys instead of putting them in plain text.
-  # Create the secret manually:
-  #   kubectl create secret generic openclaw-env-secret -n openclaw \
-  #     --from-literal=ANTHROPIC_API_KEY=sk-ant-xxx
-  credentials:
-    existingSecret: openclaw-env-secret
+  app-template:
+    openclawVersion: "2026.2.23"
+
+    controllers:
+      main:
+        containers:
+          main:
+            envFrom:
+              - secretRef:
+                  name: openclaw-env-secret
+
+    configMaps:
+      config:
+        data:
+          openclaw.json: |
+            {
+              "gateway": {
+                "controlUi": {
+                  "dangerouslyAllowHostHeaderOriginFallback": true
+                }
+              },
+              "agents": {
+                "default": {
+                  "primary": "anthropic/claude-opus-4-6"
+                }
+              },
+              "channels": {
+                "telegram": {
+                  "enabled": true,
+                  "botToken": "${TELEGRAM_BOT_TOKEN}"
+                }
+              }
+            }
