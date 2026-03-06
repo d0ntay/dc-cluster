@@ -1,0 +1,22 @@
+image:
+  repository: d0ntay/financial-dashboard
+  tag: latest
+  pullPolicy: Always
+
+host: finance.dc.local
+
+postgres:
+  image: postgres:16-alpine
+  database: financial_dashboard
+  user: finapp
+  storage: 5Gi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+shutdownTimeout: "30"
