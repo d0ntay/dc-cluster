@@ -25,10 +25,14 @@ spec:
               value: {{ .Values.postgres.database }}
             - name: POSTGRES_USER
               value: {{ .Values.postgres.user }}
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: financial-dashboard-secret
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
                   key: POSTGRES_PASSWORD
           ports:
             - containerPort: 5432
