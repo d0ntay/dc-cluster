@@ -31,8 +31,6 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: financial-dashboard-secret
-            - name: PGDATA
-              value: /var/lib/postgresql/data/pgdata
                   key: POSTGRES_PASSWORD
           ports:
             - containerPort: 5432
