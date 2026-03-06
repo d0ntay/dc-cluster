@@ -18,6 +18,7 @@ spec:
         - name: financial-dashboard
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["server"]
           args:
             - "-port"
             - "8080"
