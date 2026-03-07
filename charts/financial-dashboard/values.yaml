@@ -3,7 +3,7 @@ image:
   tag: latest
   pullPolicy: Always
 
-host: finance.dc.local
+host: finance.dc.internal
 
 postgres:
   image: postgres:16-alpine

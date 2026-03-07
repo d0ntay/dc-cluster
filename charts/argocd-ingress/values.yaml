@@ -1,1 +1,1 @@
-host: argocd.dc.local
+host: argocd.dc.internal

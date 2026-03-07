@@ -1,2 +1,2 @@
-domain: dc.local
+domain: dc.internal
 traefikIP: 192.168.1.71
