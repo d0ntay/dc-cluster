@@ -23,6 +23,17 @@ spec:
               - grafana.dc.internal
             annotations:
               traefik.ingress.kubernetes.io/router.entrypoints: web
+          additionalDataSources:
+            - name: Loki
+              type: loki
+              url: http://loki:3100
+              access: proxy
+              isDefault: false
+            - name: Tempo
+              type: tempo
+              url: http://tempo:3200
+              access: proxy
+              isDefault: false
         prometheus:
           ingress:
             enabled: true
