@@ -16,6 +16,7 @@ spec:
         prometheus:
           enabled: false
         loki:
+          isDefault: false
           persistence:
             enabled: true
             storageClassName: longhorn
