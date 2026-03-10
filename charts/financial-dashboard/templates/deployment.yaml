@@ -36,8 +36,6 @@ spec:
             - "8080"
             - "-static"
             - "/static"
-            - "-shutdown-timeout"
-            - {{ .Values.shutdownTimeout | quote }}
           ports:
             - name: http
               containerPort: 8080
