@@ -18,7 +18,7 @@ spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       nodeSelector:
-        kubernetes.io/hostname: dc-worker-01
+        kubernetes.io/hostname: dc-control-01
       containers:
         - name: coredns
           image: rancher/mirrored-coredns-coredns:1.14.1
