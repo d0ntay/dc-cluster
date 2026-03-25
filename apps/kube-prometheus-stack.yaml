@@ -12,6 +12,13 @@ spec:
     helm:
       values: |
         grafana:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node-role.kubernetes.io/control-plane
+                        operator: DoesNotExist
           admin:
             existingSecret: grafana-admin-credentials
             userKey: admin-user
@@ -34,7 +41,23 @@ spec:
               url: http://tempo:3200
               access: proxy
               isDefault: false
+        prometheusOperator:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node-role.kubernetes.io/control-plane
+                        operator: DoesNotExist
         prometheus:
+          prometheusSpec:
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                        - key: node-role.kubernetes.io/control-plane
+                          operator: DoesNotExist
           ingress:
             enabled: true
             ingressClassName: traefik
@@ -42,6 +65,15 @@ spec:
               - prometheus.dc.internal
             annotations:
               traefik.ingress.kubernetes.io/router.entrypoints: web
+        alertmanager:
+          alertmanagerSpec:
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                        - key: node-role.kubernetes.io/control-plane
+                          operator: DoesNotExist
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

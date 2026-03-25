@@ -30,6 +30,13 @@ spec:
             - minio-api.dc.internal
           annotations:
             traefik.ingress.kubernetes.io/router.entrypoints: web
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/control-plane
+                      operator: DoesNotExist
   destination:
     server: https://kubernetes.default.svc
     namespace: minio

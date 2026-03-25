@@ -15,6 +15,14 @@ spec:
           enabled: true
           storageClassName: longhorn
           size: 10Gi
+        tempo:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node-role.kubernetes.io/control-plane
+                        operator: DoesNotExist
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
