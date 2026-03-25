@@ -7,6 +7,8 @@ metadata:
     app: coredns-custom
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: coredns-custom
