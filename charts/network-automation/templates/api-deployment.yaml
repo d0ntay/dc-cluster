@@ -63,7 +63,7 @@ spec:
               port: 8000
             periodSeconds: 10
           livenessProbe:
-            httpGet:
-              path: /healthz
+            tcpSocket:
               port: 8000
             periodSeconds: 30
+            failureThreshold: 3
