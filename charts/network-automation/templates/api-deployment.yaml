@@ -23,11 +23,9 @@ spec:
               - matchExpressions:
                   - key: node-role.kubernetes.io/control-plane
                     operator: DoesNotExist
-      imagePullSecrets:
-        - name: harbor-pull-secret
       containers:
         - name: api
-          image: "{{ .Values.registry }}/{{ .Values.api.image }}:{{ .Values.api.tag }}"
+          image: "{{ .Values.api.image }}:{{ .Values.api.tag }}"
           imagePullPolicy: Always
           ports:
             - name: http

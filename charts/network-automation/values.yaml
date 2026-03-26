@@ -1,5 +1,3 @@
-registry: harbor.dc.internal/network-automation
-
 dashboard:
   image: dashboard
   tag: latest

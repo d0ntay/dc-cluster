@@ -23,11 +23,9 @@ spec:
               - matchExpressions:
                   - key: node-role.kubernetes.io/control-plane
                     operator: DoesNotExist
-      imagePullSecrets:
-        - name: harbor-pull-secret
       containers:
         - name: dashboard
-          image: "{{ .Values.registry }}/{{ .Values.dashboard.image }}:{{ .Values.dashboard.tag }}"
+          image: "{{ .Values.dashboard.image }}:{{ .Values.dashboard.tag }}"
           imagePullPolicy: Always
           ports:
             - name: http
