@@ -1,4 +1,4 @@
-registry: 10.120.0.2:30003/network-automation
+registry: harbor.dc.internal/network-automation
 
 dashboard:
   image: dashboard
