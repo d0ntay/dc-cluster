@@ -21,6 +21,8 @@ spec:
             className: traefik
             annotations:
               traefik.ingress.kubernetes.io/router.entrypoints: web
+              ingress.kubernetes.io/ssl-redirect: "false"
+              nginx.ingress.kubernetes.io/ssl-redirect: "false"
         externalURL: http://harbor.dc.internal
         existingSecretAdminPassword: harbor-admin
         existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
