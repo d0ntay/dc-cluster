@@ -1,0 +1,154 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nautobot
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: nautobot
+    component: web
+    {{- include "network-automation.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nautobot
+      component: web
+  template:
+    metadata:
+      labels:
+        app: nautobot
+        component: web
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+      containers:
+        - name: nautobot
+          image: {{ .Values.nautobot.image }}
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: nautobot-credentials
+          volumeMounts:
+            - name: config
+              mountPath: /opt/nautobot/nautobot_config.py
+              subPath: nautobot_config.py
+          resources:
+            {{- toYaml .Values.nautobot.web.resources | nindent 12 }}
+          startupProbe:
+            httpGet:
+              path: /health/
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: 8080
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 8080
+            periodSeconds: 30
+      volumes:
+        - name: config
+          configMap:
+            name: nautobot-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nautobot-worker
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: nautobot
+    component: worker
+    {{- include "network-automation.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nautobot
+      component: worker
+  template:
+    metadata:
+      labels:
+        app: nautobot
+        component: worker
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+      containers:
+        - name: nautobot-worker
+          image: {{ .Values.nautobot.image }}
+          command: ["nautobot-server", "celery", "worker", "-l", "INFO", "--concurrency", {{ .Values.nautobot.worker.concurrency | quote }}]
+          envFrom:
+            - secretRef:
+                name: nautobot-credentials
+          volumeMounts:
+            - name: config
+              mountPath: /opt/nautobot/nautobot_config.py
+              subPath: nautobot_config.py
+          resources:
+            {{- toYaml .Values.nautobot.worker.resources | nindent 12 }}
+      volumes:
+        - name: config
+          configMap:
+            name: nautobot-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nautobot-beat
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: nautobot
+    component: beat
+    {{- include "network-automation.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nautobot
+      component: beat
+  template:
+    metadata:
+      labels:
+        app: nautobot
+        component: beat
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+      containers:
+        - name: nautobot-beat
+          image: {{ .Values.nautobot.image }}
+          command: ["nautobot-server", "celery", "beat", "-l", "INFO"]
+          envFrom:
+            - secretRef:
+                name: nautobot-credentials
+          volumeMounts:
+            - name: config
+              mountPath: /opt/nautobot/nautobot_config.py
+              subPath: nautobot_config.py
+          resources:
+            {{- toYaml .Values.nautobot.beat.resources | nindent 12 }}
+      volumes:
+        - name: config
+          configMap:
+            name: nautobot-config

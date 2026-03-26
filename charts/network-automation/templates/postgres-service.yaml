@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nautobot-db
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: nautobot-db
+    {{- include "network-automation.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    app: nautobot-db
+  ports:
+    - port: 5432
+      targetPort: 5432

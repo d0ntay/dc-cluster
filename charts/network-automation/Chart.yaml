@@ -1,0 +1,6 @@
+apiVersion: v2
+name: network-automation
+description: Network automation platform — dashboard, API, Nautobot, Batfish
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

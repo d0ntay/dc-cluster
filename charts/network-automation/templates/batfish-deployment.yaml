@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: batfish
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: batfish
+    {{- include "network-automation.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: batfish
+  template:
+    metadata:
+      labels:
+        app: batfish
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+      containers:
+        - name: batfish
+          image: {{ .Values.batfish.image }}
+          ports:
+            - name: coordinator
+              containerPort: 9996
+          resources:
+            {{- toYaml .Values.batfish.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          startupProbe:
+            tcpSocket:
+              port: 9996
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 9996
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 9996
+            periodSeconds: 30
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: batfish-data

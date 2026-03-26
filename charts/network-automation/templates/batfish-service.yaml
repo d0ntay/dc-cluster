@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: batfish
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: batfish
+    {{- include "network-automation.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    app: batfish
+  ports:
+    - name: coordinator
+      port: 9996
+      targetPort: 9996
