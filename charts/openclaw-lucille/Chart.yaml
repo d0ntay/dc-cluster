@@ -1,0 +1,10 @@
+apiVersion: v2
+name: openclaw
+description: OpenClaw AI assistant
+type: application
+version: 0.1.0
+appVersion: "2026.3.8"
+dependencies:
+  - name: openclaw
+    version: "*"
+    repository: https://serhanekicii.github.io/openclaw-helm

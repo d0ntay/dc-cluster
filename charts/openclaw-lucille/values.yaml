@@ -1,0 +1,51 @@
+openclaw:
+  app-template:
+    openclawVersion: "2026.3.8"
+    configMode: "overwrite"
+
+    controllers:
+      main:
+        strategy: RollingUpdate
+        rollingUpdate:
+          unavailable: 0
+          surge: 1
+        containers:
+          main:
+            envFrom:
+              - secretRef:
+                  name: openclaw-env-secret
+
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+
+    configMaps:
+      config:
+        data:
+          openclaw.json: |
+            {
+              "gateway": {
+                "mode": "local",
+                "controlUi": {
+                  "dangerouslyAllowHostHeaderOriginFallback": true
+                }
+              },
+              "agents": {
+                "defaults": {
+                  "model": {
+                    "primary": "anthropic/claude-sonnet-4-6"
+                  }
+                }
+              },
+              "channels": {
+                "telegram": {
+                  "enabled": true,
+                  "botToken": "${TELEGRAM_BOT_TOKEN}"
+                }
+              }
+            }

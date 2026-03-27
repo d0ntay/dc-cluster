@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openclaw-lucille
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/d0ntay/dc-cluster.git
+    targetRevision: main
+    path: charts/openclaw-lucille
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openclaw-lucille
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
