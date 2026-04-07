@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitea
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: gitea
+    {{- include "network-automation.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitea
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: gitea
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+      containers:
+        - name: gitea
+          image: {{ .Values.gitea.image }}
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            - name: GITEA__database__DB_TYPE
+              value: "sqlite3"
+            - name: GITEA__server__ROOT_URL
+              value: "http://{{ .Values.gitea.host }}"
+            - name: GITEA__server__HTTP_PORT
+              value: "3000"
+            - name: GITEA__security__INSTALL_LOCK
+              value: "true"
+          resources:
+            {{- toYaml .Values.gitea.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/gitea
+            - name: config
+              mountPath: /etc/gitea
+          readinessProbe:
+            httpGet:
+              path: /api/v1/version
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/v1/version
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: gitea-data
+        - name: config
+          emptyDir: {}
