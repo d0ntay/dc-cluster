@@ -35,16 +35,6 @@ spec:
             - secretRef:
                 name: nautobot-credentials
           env:
-            - name: NAPALM_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: nautobot-credentials
-                  key: NAPALM_USERNAME
-            - name: NAPALM_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: nautobot-credentials
-                  key: NAPALM_PASSWORD
             - name: GITEA_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -113,16 +103,6 @@ spec:
             - secretRef:
                 name: nautobot-credentials
           env:
-            - name: NAPALM_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: nautobot-credentials
-                  key: NAPALM_USERNAME
-            - name: NAPALM_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: nautobot-credentials
-                  key: NAPALM_PASSWORD
             - name: GITEA_TOKEN
               valueFrom:
                 secretKeyRef:

@@ -25,6 +25,17 @@ spec:
               - matchExpressions:
                   - key: node-role.kubernetes.io/control-plane
                     operator: DoesNotExist
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: init-permissions
+          image: busybox:1.36
+          command: ["sh", "-c", "chown -R 1000:1000 /var/lib/gitea /etc/gitea"]
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/gitea
+            - name: config
+              mountPath: /etc/gitea
       containers:
         - name: gitea
           image: {{ .Values.gitea.image }}
