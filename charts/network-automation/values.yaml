@@ -23,7 +23,7 @@ api:
       memory: 512Mi
 
 nautobot:
-  image: networktocode/nautobot:3.0-py3.11
+  image: d0ntay/netauto-nautobot:golden-config
   web:
     resources:
       requests:
@@ -81,3 +81,15 @@ batfish:
     limits:
       cpu: 2000m
       memory: 4Gi
+
+gitea:
+  image: gitea/gitea:1-rootless
+  host: gitea.dc.internal
+  storage: 5Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
