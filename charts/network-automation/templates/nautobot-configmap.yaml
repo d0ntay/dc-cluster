@@ -48,3 +48,28 @@ data:
         "NAUTOBOT_CORS_ORIGINS", "http://api:8000"
     ).split(",")
     GRAPHQL_ENABLED = True
+
+    # Golden Config + Nornir plugins
+    PLUGINS = [
+        "nautobot_plugin_nornir",
+        "nautobot_golden_config",
+    ]
+
+    PLUGINS_CONFIG = {
+        "nautobot_plugin_nornir": {
+            "nornir_settings": {
+                "credentials": "nautobot_plugin_nornir.plugins.credentials.env_vars.CredentialsEnvVars",
+            },
+        },
+        "nautobot_golden_config": {
+            "enable_backup": True,
+            "enable_compliance": False,
+            "enable_intended": False,
+            "enable_postprocessing": False,
+            "enable_plan": False,
+            "enable_deploy": False,
+            "per_feature_bar_width": 0.3,
+            "per_feature_width": 13,
+            "per_feature_height": 4,
+        },
+    }
