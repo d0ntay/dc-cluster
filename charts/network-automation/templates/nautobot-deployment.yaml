@@ -34,6 +34,22 @@ spec:
           envFrom:
             - secretRef:
                 name: nautobot-credentials
+          env:
+            - name: NAPALM_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: nautobot-credentials
+                  key: NAPALM_USERNAME
+            - name: NAPALM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nautobot-credentials
+                  key: NAPALM_PASSWORD
+            - name: GITEA_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: nautobot-credentials
+                  key: GITEA_TOKEN
           volumeMounts:
             - name: config
               mountPath: /opt/nautobot/nautobot_config.py
@@ -96,6 +112,22 @@ spec:
           envFrom:
             - secretRef:
                 name: nautobot-credentials
+          env:
+            - name: NAPALM_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: nautobot-credentials
+                  key: NAPALM_USERNAME
+            - name: NAPALM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nautobot-credentials
+                  key: NAPALM_PASSWORD
+            - name: GITEA_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: nautobot-credentials
+                  key: GITEA_TOKEN
           volumeMounts:
             - name: config
               mountPath: /opt/nautobot/nautobot_config.py
