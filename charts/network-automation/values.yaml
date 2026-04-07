@@ -1,5 +1,5 @@
 dashboard:
-  image: dashboard
+  image: d0ntay/netauto-dashboard
   tag: latest
   host: netauto.dc.internal
   resources:
@@ -11,7 +11,7 @@ dashboard:
       memory: 128Mi
 
 api:
-  image: api
+  image: d0ntay/netauto-api
   tag: latest
   host: netauto-api.dc.internal
   resources:
